@@ -13,17 +13,13 @@ body {
     background-color: #fff;
 }
 
-.title {
+h1 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-#weather-form {
-    display: flex;
-    flex-direction: column;
-}
-
 #city {
+    width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -31,6 +27,7 @@ body {
 }
 
 #get-weather {
+    width: 100%;
     padding: 10px;
     background-color: #4CAF50;
     color: #fff;
@@ -49,4 +46,8 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #f9f9f9;
+}
+
+#weather-info p {
+    margin-bottom: 10px;
 }
