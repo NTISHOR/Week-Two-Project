@@ -33,3 +33,4 @@ function displayWeather(data) {
 
     weatherInfo.innerHTML = weatherHtml;
 }
+

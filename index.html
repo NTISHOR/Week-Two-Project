@@ -5,26 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">Weather App</h1>
-        <form id="weather-form">
-            <input id="city" type="text" placeholder="Enter city name" required>
-            <button id="get-weather" type="submit">Get Weather</button>
+    <div class="container mt-5">
+        <h1 class="title text style="text-align: center; font-size: 24px; font-weight: bold;">Weather App</h1>
+        <form id="weather-form" class="mt-4">
+            <div class="form-group">
+                <input id="city" type="text" class="form-control" placeholder="Enter city name" required>
+            </div>
+            <button id="get-weather" type="submit" class="btn btn-primary">Get Weather</button>
         </form>
-        <div id="weather-info"></div>
-    </div> 
-    <div class="container-fluid my-4 weather-data">
-    <div class="row">
-        <div class="col-xxl-3 col-md-4 px-lg-4">
-        </div>
-        <div class="col-xxl-9 col-md-8 mt-md-1 mt-4 pe-lg-4">
-        </div>
+        <div id="weather-info" class="mt-4"></div>
+        <p class="text-center mt-5" style="font-family: 'Times New Roman', Times, serif; color: blue; font-size: 18px; background-color: gold; padding: 10px;">By Akpotu Augustine Ntishor</p>
     </div>
-</div>
-<script src="script.js"></script>
-<p style="font-family: 'Times New Roman', Times, serif; color: blue; font-size: 18px; text-align: center; background-color: gold;">By Akpotu Augustine Ntishor</p>
-</body> 
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
- 
