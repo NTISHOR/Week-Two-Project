@@ -1,5 +1,3 @@
-HTML (index.html)
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +7,14 @@ HTML (index.html)
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div id="weather-container">
-        <h2>Weather App</h2>
-        <input id="city" type="text" placeholder="Enter city name">
-        <button id="get-weather">Get Weather</button>
+    <div class="container">
+        <h1 class="title">Weather App</h1>
+        <form id="weather-form">
+            <input id="city" type="text" placeholder="Enter city name" required>
+            <button id="get-weather" type="submit">Get Weather</button>
+        </form>
         <div id="weather-info"></div>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
