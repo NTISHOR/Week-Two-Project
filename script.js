@@ -5,18 +5,19 @@ const weatherInfo = document.getElementById('weather-info');
 weatherForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const city = document.getElementById('city').value.trim();
-    if (city === '') {
-        alert('Please enter a city name');
-        return;
+    if (city) {
+        getWeather(city);
     }
+});
 
+function getWeather(city) {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => displayWeather(data))
         .catch(error => console.error('Error:', error));
-});
+}
 
 function displayWeather(data) {
     const weatherDescription = data.weather[0].description;
@@ -33,4 +34,5 @@ function displayWeather(data) {
 
     weatherInfo.innerHTML = weatherHtml;
 }
+
 
