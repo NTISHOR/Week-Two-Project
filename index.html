@@ -1,102 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Weather PWA</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4facfe">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #4facfe, #00f2fe); min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; color: #fff; padding: 20px; text-align: center; transition: background 0.5s ease, color 0.5s ease; }
-    body.dark { background: linear-gradient(to right, #232526, #414345); color: #eaeaea; }
-    h1 { font-size: 2.2rem; margin-bottom: 20px; }
-    .input-container { display: flex; flex-direction: column; width: 100%; max-width: 400px; gap: 10px; margin-bottom: 20px; }
-    input, button { padding: 12px; border: none; border-radius: 8px; font-size: 1rem; width: 100%; }
-    button { background: #007bff; color: #fff; cursor: pointer; transition: background 0.3s ease; }
-    button:hover { background: #0056b3; }
-    .weather-card, .forecast-container { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 16px; max-width: 500px; width: 100%; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-    .weather-card img { width: 80px; height: 80px; }
-    .forecast-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
-    .forecast-day { background: rgba(255,255,255,0.15); padding: 10px; border-radius: 12px; text-align: center; }
-    .forecast-day img { width: 50px; height: 50px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #weather-container {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-  <h1>Advanced Weather PWA</h1>
-  <button id="themeToggle">Toggle Dark Mode</button>
-  <div class="input-container">
-    <input type="text" id="cityInput" placeholder="Enter city name">
-    <button id="fetchBtn">Get Weather</button>
-  </div>
-  <div class="weather-card" id="weatherResult">Fetching your location...</div>
-  <div class="forecast-container" id="forecastResult"></div>
+    <div id="weather-container">
+        <h2>Weather App</h2>
+        <input id="city" type="text" placeholder="Enter city name">
+        <button id="get-weather">Get Weather</button>
+        <div id="weather-info"></div>
+    </div>
 
-  <script>
-    const apiKey = "REPLACE_WITH_REAL_OPENWEATHERMAP_API_KEY";
-    const fetchBtn = document.getElementById("fetchBtn");
-    const cityInput = document.getElementById("cityInput");
-    const weatherResult = document.getElementById("weatherResult");
-    const forecastResult = document.getElementById("forecastResult");
-    const themeToggle = document.getElementById("themeToggle");
-
-    themeToggle.addEventListener("click", () => document.body.classList.toggle("dark"));
-
-    function fetchWeather(city) {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          if (data.cod !== 200) throw new Error(data.message);
-          displayWeather(data);
-          fetchForecast(data.coord.lat, data.coord.lon);
-        })
-        .catch(err => weatherResult.innerHTML = `Error: ${err.message}`);
-    }
-
-    function fetchWeatherByCoords(lat, lon) {
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-      fetch(url)
-        .then(res => res.json())
-        .then(data => { displayWeather(data); fetchForecast(lat, lon); })
-        .catch(err => weatherResult.innerHTML = `Error: ${err.message}`);
-    }
-
-    function fetchForecast(lat, lon) {
-      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-      fetch(url)
-        .then(res => res.json())
-        .then(data => displayForecast(data))
-        .catch(() => forecastResult.innerHTML = "Unable to load forecast");
-    }
-
-    function displayWeather(data) {
-      const { name, main, weather, wind, sys } = data;
-      const icon = `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
-      weatherResult.innerHTML = `<h2>${name}, ${sys.country}</h2><img src="${icon}" alt="${weather[0].description}"><p><strong>${weather[0].main}:</strong> ${weather[0].description}</p><p>Temperature: ${main.temp}°C (Feels like: ${main.feels_like}°C)</p><p>Humidity: ${main.humidity}% | Wind: ${wind.speed} m/s</p>`;
-    }
-
-    function displayForecast(data) {
-      const daily = {};
-      data.list.forEach(entry => { const date = entry.dt_txt.split(" ")[0]; if (!daily[date] && Object.keys(daily).length < 5) daily[date] = entry; });
-      forecastResult.innerHTML = Object.values(daily).map(day => {
-        const date = new Date(day.dt_txt);
-        const icon = `https://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
-        return `<div class="forecast-day"><h4>${date.toLocaleDateString("en-US", { weekday: 'short' })}</h4><img src="${icon}" alt="${day.weather[0].description}"><p>${Math.round(day.main.temp)}°C</p><p>${day.weather[0].main}</p></div>`;
-      }).join("");
-    }
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(pos => fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude), () => weatherResult.innerHTML = "Could not fetch your location. Please enter a city.");
-    } else { weatherResult.innerHTML = "Geolocation not supported. Please enter a city."; }
-
-    fetchBtn.addEventListener("click", () => {
-      const city = cityInput.value.trim();
-      if (!city) { weatherResult.innerHTML = "Please enter a city name."; forecastResult.innerHTML = ""; return; }
-      fetchWeather(city);
-    });
-
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
-  </script>
+    <script src="script.js"></script>
+    
 </body>
 </html>
